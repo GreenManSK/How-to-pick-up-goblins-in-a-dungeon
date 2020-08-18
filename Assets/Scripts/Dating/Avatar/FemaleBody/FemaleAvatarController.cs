@@ -33,7 +33,7 @@ namespace Dating.Avatar.FemaleBody
             Redraw();
         }
 
-        private void Redraw()
+        public void Redraw()
         {
             // Hair
             hairBack.sprite = sprites.hairBackToSprite[data.hairBack];

@@ -23,12 +23,15 @@ namespace Characters
 
         public delegate void OnDestroyCallback();
 
-        public GirlStatsBlock statsBlock;
+        public EnemyStatsBlock statsBlock;
         public GameObject weapon;
         public Vector3 weaponPivot = Vector3.zero;
         public float maxSpeed = 2f;
         public FemaleAvatarData avatarData;
 
+        public float resistance;
+
+        public GameObject hearths;
         public SpriteRenderer sprite;
         public Animator animator;
 
@@ -43,6 +46,7 @@ namespace Characters
             _aiPath = GetComponent<AIPath>();
             _aiDestinationSetter = GetComponent<AIDestinationSetter>();
             avatarData = FemaleAvatarData.Random();
+            ChangeResistance(statsBlock.GetMaxResistance(), false);
         }
 
         private void Update()
@@ -58,7 +62,8 @@ namespace Characters
             if (_state == EnemyState.Idle && _aiPath.desiredVelocity != Vector3.zero)
             {
                 ChangeState(EnemyState.Moving);
-            } else if (_state == EnemyState.Moving && _aiPath.desiredVelocity == Vector3.zero)
+            }
+            else if (_state == EnemyState.Moving && _aiPath.desiredVelocity == Vector3.zero)
             {
                 ChangeState(EnemyState.Idle);
             }
@@ -71,16 +76,23 @@ namespace Characters
 
         private void ChangeState(EnemyState state)
         {
+            if (state != EnemyState.Moving)
+                animator.SetTrigger(StopAnimation);
             switch (state)
             {
                 case EnemyState.Idle:
-                    animator.SetTrigger(StopAnimation);
                     break;
                 case EnemyState.Attacking:
-                case EnemyState.Seduced:
-                case EnemyState.Dead:
-                    animator.SetTrigger(StopAnimation);
                     ToggleMove(false);
+                    break;
+                case EnemyState.Dead:
+                    ToggleMove(false);
+                    _onDestroyCallback?.Invoke();
+                    break;
+                case EnemyState.Seduced:
+                    Instantiate(hearths, transform);
+                    ToggleMove(false);
+                    _onDestroyCallback?.Invoke();
                     break;
                 case EnemyState.Moving:
                     animator.SetTrigger(MoveAnimation);
@@ -94,7 +106,6 @@ namespace Characters
         protected override void OnDeath()
         {
             ChangeState(EnemyState.Dead);
-            _onDestroyCallback?.Invoke();
             base.OnDeath();
         }
 
@@ -111,6 +122,31 @@ namespace Characters
             if (!Mathf.Approximately(_aiPath.desiredVelocity.x, 0))
             {
                 sprite.flipX = _aiPath.desiredVelocity.x < 0;
+            }
+        }
+
+        private void ToggleMove(bool enable)
+        {
+            _aiPath.maxSpeed = enable ? maxSpeed : 0;
+        }
+
+        public void ChangeResistance(float value, bool relative = true)
+        {
+            if (_state == EnemyState.Seduced || _state == EnemyState.Dead)
+                return;
+
+            resistance = relative ? resistance + value : value;
+            resistance = Mathf.Max(resistance, 0f);
+            var progress = resistance / statsBlock.GetMaxResistance();
+            if (progress < .333f)
+                avatarData.blush = Blush.Large;
+            else if (progress < .666f)
+                avatarData.blush = Blush.Small;
+            else
+                avatarData.blush = Blush.None;
+            if (Mathf.Approximately(resistance, 0))
+            {
+                ChangeState(EnemyState.Seduced);
             }
         }
 
@@ -136,6 +172,8 @@ namespace Characters
 
         public void SetTarget(Transform target, OnDestroyCallback onDestroyCallback = null)
         {
+            if (_state == EnemyState.Dead || _state == EnemyState.Seduced)
+                return;
             _aiDestinationSetter.target = target;
             if (onDestroyCallback != null)
                 _onDestroyCallback = onDestroyCallback;
@@ -151,11 +189,6 @@ namespace Characters
             {
                 ToggleMove(true);
             }
-        }
-
-        private void ToggleMove(bool enable)
-        {
-            _aiPath.maxSpeed = enable ? maxSpeed : 0;
         }
     }
 }

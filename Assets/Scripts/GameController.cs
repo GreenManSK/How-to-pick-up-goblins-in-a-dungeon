@@ -30,13 +30,20 @@ public class GameController : MonoBehaviour
     {
         player.gameObject.SetActive(true);
         datingController.gameObject.SetActive(false);
+        datingController.playerController = player;
     }
 
     private void TogglePlayMode()
     {
         if (!enemies.Any())
-            return;
-        _isDating = !_isDating;
+        {
+            _isDating = false;
+        }
+        else
+        {
+            _isDating = !_isDating;
+        }
+
         player.TogglePlayMode(_isDating);
         foreach (var enemy in enemies)
         {

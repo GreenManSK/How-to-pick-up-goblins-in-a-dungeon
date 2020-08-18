@@ -13,6 +13,8 @@ namespace Dating
         public FemaleAvatarController avatarController;
         public GameObject dateArrow;
 
+        public PlayerController playerController;
+
         private List<EnemyController> _enemies = new List<EnemyController>();
         private int _activeIndex = 0;
 
@@ -20,6 +22,7 @@ namespace Dating
         {
             GameController.Input.Dating.Next.performed += ctx => SelectNext();
             GameController.Input.Dating.Prev.performed += ctx => SelectPrev();
+            GameController.Input.Dating.Select.performed += ctx => Seduce();
         }
 
         private void OnEnable()
@@ -57,6 +60,15 @@ namespace Dating
             var enemy = _enemies[activeIndex];
             dateArrow.transform.position = enemy.transform.position + new Vector3(0,0.5f,0);
             avatarController.SetData(enemy.avatarData);
+        }
+
+        private void Seduce()
+        {
+            if (!gameObject.activeSelf)
+                return;
+            var enemy = _enemies[_activeIndex];
+            enemy.ChangeResistance(-1 * playerController.statsBlock.cha);
+            avatarController.Redraw();
         }
 
         public void SetData(IEnumerable<EnemyController> enemies)

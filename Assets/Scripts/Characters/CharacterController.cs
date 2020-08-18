@@ -8,7 +8,7 @@ namespace Characters
     {
         protected virtual void Awake()
         {
-            health = 5 * GetBasicStats().con;
+            health = GetBasicStats().GetMaxHp();
         }
 
         public abstract BasicStatsBlock GetBasicStats();

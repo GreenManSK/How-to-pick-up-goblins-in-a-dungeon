@@ -150,6 +150,14 @@ public class @Input : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
+                    ""name"": ""Select"",
+                    ""type"": ""Button"",
+                    ""id"": ""d7f3227b-a1eb-4edd-a1af-8f0169f9cdbf"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
                     ""name"": ""Next"",
                     ""type"": ""Button"",
                     ""id"": ""1f15bf1d-ddb3-4517-ac57-c2d8e8ad0824"",
@@ -254,6 +262,28 @@ public class @Input : IInputActionCollection, IDisposable
                     ""action"": ""Prev"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""04f49a7e-59a9-4dfe-8cb0-3a64ec24d33c"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Select"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1771dbc2-697f-4553-820c-3bee59b24e96"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Select"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -294,6 +324,7 @@ public class @Input : IInputActionCollection, IDisposable
         // Dating
         m_Dating = asset.FindActionMap("Dating", throwIfNotFound: true);
         m_Dating_Stop = m_Dating.FindAction("Stop", throwIfNotFound: true);
+        m_Dating_Select = m_Dating.FindAction("Select", throwIfNotFound: true);
         m_Dating_Next = m_Dating.FindAction("Next", throwIfNotFound: true);
         m_Dating_Prev = m_Dating.FindAction("Prev", throwIfNotFound: true);
         // Testing
@@ -390,6 +421,7 @@ public class @Input : IInputActionCollection, IDisposable
     private readonly InputActionMap m_Dating;
     private IDatingActions m_DatingActionsCallbackInterface;
     private readonly InputAction m_Dating_Stop;
+    private readonly InputAction m_Dating_Select;
     private readonly InputAction m_Dating_Next;
     private readonly InputAction m_Dating_Prev;
     public struct DatingActions
@@ -397,6 +429,7 @@ public class @Input : IInputActionCollection, IDisposable
         private @Input m_Wrapper;
         public DatingActions(@Input wrapper) { m_Wrapper = wrapper; }
         public InputAction @Stop => m_Wrapper.m_Dating_Stop;
+        public InputAction @Select => m_Wrapper.m_Dating_Select;
         public InputAction @Next => m_Wrapper.m_Dating_Next;
         public InputAction @Prev => m_Wrapper.m_Dating_Prev;
         public InputActionMap Get() { return m_Wrapper.m_Dating; }
@@ -411,6 +444,9 @@ public class @Input : IInputActionCollection, IDisposable
                 @Stop.started -= m_Wrapper.m_DatingActionsCallbackInterface.OnStop;
                 @Stop.performed -= m_Wrapper.m_DatingActionsCallbackInterface.OnStop;
                 @Stop.canceled -= m_Wrapper.m_DatingActionsCallbackInterface.OnStop;
+                @Select.started -= m_Wrapper.m_DatingActionsCallbackInterface.OnSelect;
+                @Select.performed -= m_Wrapper.m_DatingActionsCallbackInterface.OnSelect;
+                @Select.canceled -= m_Wrapper.m_DatingActionsCallbackInterface.OnSelect;
                 @Next.started -= m_Wrapper.m_DatingActionsCallbackInterface.OnNext;
                 @Next.performed -= m_Wrapper.m_DatingActionsCallbackInterface.OnNext;
                 @Next.canceled -= m_Wrapper.m_DatingActionsCallbackInterface.OnNext;
@@ -424,6 +460,9 @@ public class @Input : IInputActionCollection, IDisposable
                 @Stop.started += instance.OnStop;
                 @Stop.performed += instance.OnStop;
                 @Stop.canceled += instance.OnStop;
+                @Select.started += instance.OnSelect;
+                @Select.performed += instance.OnSelect;
+                @Select.canceled += instance.OnSelect;
                 @Next.started += instance.OnNext;
                 @Next.performed += instance.OnNext;
                 @Next.canceled += instance.OnNext;
@@ -475,6 +514,7 @@ public class @Input : IInputActionCollection, IDisposable
     public interface IDatingActions
     {
         void OnStop(InputAction.CallbackContext context);
+        void OnSelect(InputAction.CallbackContext context);
         void OnNext(InputAction.CallbackContext context);
         void OnPrev(InputAction.CallbackContext context);
     }

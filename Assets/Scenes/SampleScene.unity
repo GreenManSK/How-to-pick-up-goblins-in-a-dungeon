@@ -687,7 +687,7 @@ PrefabInstance:
     - target: {fileID: 2167667702758061916, guid: 443aba9ac75582d48b3b6d4f3b9ca66a,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 368.32086
       objectReference: {fileID: 0}
     - target: {fileID: 2167667702758061916, guid: 443aba9ac75582d48b3b6d4f3b9ca66a,
         type: 3}
@@ -1586,6 +1586,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5169974924175716018, guid: 0c4272a0034180449a467e8ff3346a38,
+        type: 3}
+      propertyPath: statsBlock.resistance
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 8248012179080833895, guid: 0c4272a0034180449a467e8ff3346a38,
         type: 3}
       propertyPath: target
@@ -1804,6 +1809,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5169974924175716018, guid: 0c4272a0034180449a467e8ff3346a38,
+        type: 3}
+      propertyPath: statsBlock.resistance
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8248012179080833895, guid: 0c4272a0034180449a467e8ff3346a38,
         type: 3}
@@ -3095,6 +3105,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5169974924175716018, guid: 0c4272a0034180449a467e8ff3346a38,
+        type: 3}
+      propertyPath: statsBlock.resistance
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 8248012179080833895, guid: 0c4272a0034180449a467e8ff3346a38,
         type: 3}
       propertyPath: target
@@ -3179,7 +3194,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1321170989
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3882,6 +3897,7 @@ MonoBehaviour:
   datingUi: {fileID: 1321170988}
   avatarController: {fileID: 521703829}
   dateArrow: {fileID: 1386167405}
+  playerController: {fileID: 0}
 --- !u!4 &1529718420
 Transform:
   m_ObjectHideFlags: 0

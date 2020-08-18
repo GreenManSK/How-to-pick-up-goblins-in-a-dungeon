@@ -156,8 +156,22 @@ MonoBehaviour:
   statsBlock:
     str: 1
     con: 1
-    hardness: 1
+    resistance: 1
   weapon: {fileID: 5701807939174021216, guid: b9c7e57049f8c8241878de46b45542d9, type: 3}
+  weaponPivot: {x: 0, y: 0, z: 0}
+  maxSpeed: 2
+  avatarData:
+    hairColor: {r: 1, g: 1, b: 1, a: 1}
+    hairBack: 0
+    hairFront: 0
+    beard: 0
+    expression: 4
+    glasses: 0
+    blush: 1
+    accessories: 
+    cloth: 7
+  resistance: 0
+  hearths: {fileID: 8962182179330819073, guid: 4bdbaf29745433e47937e541017a9319, type: 3}
   sprite: {fileID: 8273179095061913523}
   animator: {fileID: 5340330433176833170}
 --- !u!58 &8000980990720936446
