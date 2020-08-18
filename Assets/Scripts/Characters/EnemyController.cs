@@ -1,4 +1,3 @@
-using System;
 using Dating.Avatar.FemaleBody;
 using Pathfinding;
 using Stats;
@@ -6,6 +5,15 @@ using UnityEngine;
 
 namespace Characters
 {
+    public enum EnemyState
+    {
+        Idle,
+        Moving,
+        Attacking,
+        Seduced,
+        Dead
+    }
+
     [RequireComponent(typeof(AIPath))]
     [RequireComponent(typeof(AIDestinationSetter))]
     public class EnemyController : CharacterController
@@ -26,8 +34,7 @@ namespace Characters
 
         private AIPath _aiPath;
         private AIDestinationSetter _aiDestinationSetter;
-        private bool _isMoving;
-        private bool _isAttacking = false;
+        private EnemyState _state = EnemyState.Idle;
 
         private OnDestroyCallback _onDestroyCallback;
 
@@ -43,55 +50,67 @@ namespace Characters
             if (_aiDestinationSetter.target == null)
                 return;
 
-            if (_aiPath.remainingDistance <= 1f && !_isAttacking)
+            if (_aiPath.remainingDistance <= 1f && _state == EnemyState.Moving)
             {
                 Attack();
             }
 
-            if (!_isAttacking)
+            if (_state == EnemyState.Idle && _aiPath.desiredVelocity != Vector3.zero)
             {
-                Move();
+                ChangeState(EnemyState.Moving);
+            } else if (_state == EnemyState.Moving && _aiPath.desiredVelocity == Vector3.zero)
+            {
+                ChangeState(EnemyState.Idle);
+            }
+
+            if (_state == EnemyState.Moving)
+            {
+                FlipSprite();
             }
         }
 
-        private void OnDestroy()
+        private void ChangeState(EnemyState state)
         {
+            switch (state)
+            {
+                case EnemyState.Idle:
+                    animator.SetTrigger(StopAnimation);
+                    break;
+                case EnemyState.Attacking:
+                case EnemyState.Seduced:
+                case EnemyState.Dead:
+                    animator.SetTrigger(StopAnimation);
+                    ToggleMove(false);
+                    break;
+                case EnemyState.Moving:
+                    animator.SetTrigger(MoveAnimation);
+                    ToggleMove(true);
+                    break;
+            }
+
+            _state = state;
+        }
+
+        protected override void OnDeath()
+        {
+            ChangeState(EnemyState.Dead);
             _onDestroyCallback?.Invoke();
+            base.OnDeath();
         }
 
         private void Attack()
         {
-            animator.SetTrigger(StopAnimation);
+            ChangeState(EnemyState.Attacking);
             var weaponObject = Instantiate(weapon, transform);
             var direction = _aiPath.destination - transform.position;
             weaponObject.GetComponent<WeaponController>().SetData(this, direction);
-            _isAttacking = true;
         }
 
-        private void Move()
+        private void FlipSprite()
         {
-            if (_aiPath.desiredVelocity != Vector3.zero)
+            if (!Mathf.Approximately(_aiPath.desiredVelocity.x, 0))
             {
-                if (!_isMoving)
-                {
-                    animator.SetTrigger(MoveAnimation);
-                }
-
-                if (_aiPath.desiredVelocity.x != 0)
-                {
-                    sprite.flipX = _aiPath.desiredVelocity.x < 0;
-                }
-
-                _isMoving = true;
-            }
-            else
-            {
-                if (_isMoving)
-                {
-                    animator.SetTrigger(StopAnimation);
-                }
-
-                _isMoving = false;
+                sprite.flipX = _aiPath.desiredVelocity.x < 0;
             }
         }
 
@@ -102,7 +121,7 @@ namespace Characters
 
         public override void OnWeaponDestroy()
         {
-            _isAttacking = false;
+            ChangeState(EnemyState.Moving);
         }
 
         public override bool IsFlipped()
@@ -122,15 +141,21 @@ namespace Characters
                 _onDestroyCallback = onDestroyCallback;
             if (target == null)
             {
-                maxSpeed = _aiPath.maxSpeed;
-                _aiPath.maxSpeed = 0;
-                _isMoving = false;
-                animator.SetTrigger(StopAnimation);
+                ToggleMove(false);
+                if (_state == EnemyState.Moving || _state == EnemyState.Attacking)
+                {
+                    ChangeState(EnemyState.Idle);
+                }
             }
             else
             {
-                _aiPath.maxSpeed = maxSpeed;
+                ToggleMove(true);
             }
+        }
+
+        private void ToggleMove(bool enable)
+        {
+            _aiPath.maxSpeed = enable ? maxSpeed : 0;
         }
     }
 }

@@ -11,8 +11,13 @@ namespace Enviroment
             health -= value;
             if (Mathf.Approximately(health, 0f) || health <= 0)
             {
-                Destroy(gameObject);
+                OnDeath();
             }
+        }
+
+        protected virtual void OnDeath()
+        {
+            Destroy(gameObject);
         }
     }
 }
