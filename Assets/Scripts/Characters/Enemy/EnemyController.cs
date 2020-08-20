@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
+using Constants;
 using Dating.Avatar.FemaleBody;
 using Pathfinding;
+using Services;
+using Services.Events;
 using Stats;
 using UnityEngine;
 
@@ -60,7 +63,7 @@ namespace Characters.Enemy
         private AIDestinationSetter _aiDestinationSetter;
         private IEnemyBehaviour _behaviour;
 
-        private Dictionary<EnemyState, IEnemyBehaviour> _behaviours;
+        private readonly Dictionary<EnemyState, IEnemyBehaviour> _behaviours = new Dictionary<EnemyState, IEnemyBehaviour>();
 
         private void Start()
         {
@@ -183,7 +186,11 @@ namespace Characters.Enemy
         {
             if (!_behaviour.IsState(EnemyState.Seduced))
                 return;
-            Debug.Log(other.gameObject.name);
+            if (other.gameObject.CompareTag(Tags.Player))
+            {
+                EventSystem.Send(new SeducedPickUpEvent(data.statsBlock.resistance));
+                Destroy(gameObject);
+            }
         }
     }
 }

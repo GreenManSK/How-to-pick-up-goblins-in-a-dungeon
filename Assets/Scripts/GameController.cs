@@ -12,6 +12,7 @@ public class GameController : MonoBehaviour
     public static Input Input;
     public static GameController Instance;
 
+    public PlayerDataController payerDataController;
     public PlayerController player;
     public DatingController datingController;
     public HashSet<EnemyController> enemies = new HashSet<EnemyController>();
@@ -31,6 +32,7 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
+        player.statsBlock = payerDataController.playerStatsBlock;
         player.gameObject.SetActive(true);
         datingController.gameObject.SetActive(false);
         datingController.playerController = player;

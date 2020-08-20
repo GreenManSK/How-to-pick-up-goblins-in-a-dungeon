@@ -1,4 +1,6 @@
 using Constants;
+using Services;
+using Services.Events;
 
 namespace Characters.Enemy
 {
@@ -11,6 +13,7 @@ namespace Characters.Enemy
             Context.rigidbody2d.isKinematic = true;
             Context.gameObject.layer = Layers.Walls;
             Context.onSetInactiveCallback?.Invoke();
+            EventSystem.Send(new KillEvent(Context.data.statsBlock.con));
         }
         
         public override bool IsState(EnemyState state)
