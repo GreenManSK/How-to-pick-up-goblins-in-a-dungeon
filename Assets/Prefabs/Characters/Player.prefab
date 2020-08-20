@@ -48,15 +48,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 1
-  moveSpeed: 5
-  sprite: {fileID: 4989821185247092176}
-  weapon: {fileID: 5701807939174021216, guid: 3036b482001027d448c478285422edb3, type: 3}
   statsBlock:
     str: 1
     con: 1
     cha: 1
     dex: 1
+  moveSpeed: 5
+  weaponPrefab: {fileID: 5701807939174021216, guid: 3036b482001027d448c478285422edb3,
+    type: 3}
   weaponPivot: {x: 0, y: 0.5, z: 0}
+  sprite: {fileID: 4989821185247092176}
 --- !u!212 &4989821185247092176
 SpriteRenderer:
   m_ObjectHideFlags: 0

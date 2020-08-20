@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Characters;
 using Characters.Enemy;
+using Characters.Player;
 using Cinemachine;
 using Dating.Avatar.FemaleBody;
 using UnityEngine;

@@ -2,6 +2,7 @@
 using System.Linq;
 using Characters;
 using Characters.Enemy;
+using Characters.Player;
 using Cinemachine;
 using Controlls;
 using Dating;

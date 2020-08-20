@@ -42,7 +42,7 @@ namespace Characters.Enemy
         {
             if (target == null)
             {
-                Context.weapon.ToggleWeapon(true);
+                Context.weapon.ToggleWeapon(false);
                 Context.ChangeState(EnemyState.Dating);
             }
         }

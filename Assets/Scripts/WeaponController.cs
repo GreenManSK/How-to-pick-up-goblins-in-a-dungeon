@@ -53,9 +53,9 @@ public class WeaponController : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void ToggleWeapon(bool stop)
+    public void ToggleWeapon(bool isMoving)
     {
-        _isMoving = !stop;
+        _isMoving = isMoving;
     }
     
     private void OnTriggerEnter2D(Collider2D other)
