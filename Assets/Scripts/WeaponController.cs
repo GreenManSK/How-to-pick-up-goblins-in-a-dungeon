@@ -63,7 +63,7 @@ public class WeaponController : MonoBehaviour
         if (!_isMoving)
             return;
         var go = other.gameObject;
-        if (_damaged.Contains(go.GetInstanceID()) || !go.CompareTag(Tags.Destroyable)) return;
+        if (_damaged.Contains(go.GetInstanceID()) || !(go.CompareTag(Tags.Destroyable) || go.CompareTag(Tags.Player))) return;
         var destroyableController = go.GetComponent<DestroyableController>();
         _damaged.Add(go.GetInstanceID());
         destroyableController.Damage(GetDamage());

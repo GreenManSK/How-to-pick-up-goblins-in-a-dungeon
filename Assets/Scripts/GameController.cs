@@ -2,6 +2,7 @@
 using System.Linq;
 using Characters;
 using Characters.Enemy;
+using Cinemachine;
 using Controlls;
 using Dating;
 using UnityEngine;
@@ -14,6 +15,7 @@ public class GameController : MonoBehaviour
     public PlayerController player;
     public DatingController datingController;
     public HashSet<EnemyController> enemies = new HashSet<EnemyController>();
+    public CinemachineVirtualCamera mainVirtualCamera;
 
     private bool _isDating = false;
 
@@ -58,6 +60,7 @@ public class GameController : MonoBehaviour
         }
         else
         {
+            mainVirtualCamera.Follow = mainVirtualCamera.LookAt = player.transform;
             datingController.gameObject.SetActive(false);
         }
     }

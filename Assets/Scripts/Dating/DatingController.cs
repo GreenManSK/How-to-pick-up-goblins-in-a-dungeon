@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Characters;
 using Characters.Enemy;
+using Cinemachine;
 using Dating.Avatar.FemaleBody;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ namespace Dating
         public GameObject datingUi;
         public FemaleAvatarController avatarController;
         public GameObject dateArrow;
+        public CinemachineVirtualCamera mainVirtualCamera;
 
         public PlayerController playerController;
 
@@ -59,6 +61,7 @@ namespace Dating
         private void SelectEnemy(int activeIndex)
         {
             var enemy = _enemies[activeIndex];
+            mainVirtualCamera.Follow = mainVirtualCamera.LookAt = enemy.transform;
             dateArrow.transform.position = enemy.transform.position + new Vector3(0,0.5f,0);
             avatarController.SetData(enemy.data.avatarData);
         }

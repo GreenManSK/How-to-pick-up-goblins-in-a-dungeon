@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Dating.Avatar.FemaleBody;
 using Pathfinding;
 using Stats;
@@ -59,6 +60,8 @@ namespace Characters.Enemy
         private AIDestinationSetter _aiDestinationSetter;
         private IEnemyBehaviour _behaviour;
 
+        private Dictionary<EnemyState, IEnemyBehaviour> _behaviours;
+
         private void Start()
         {
             rigidbody2d = GetComponent<Rigidbody2D>();
@@ -82,29 +85,34 @@ namespace Characters.Enemy
             }
 
             _behaviour?.OnTransitionOut();
-            switch (state)
+            if (!_behaviours.ContainsKey(state))
             {
-                case EnemyState.Idle:
-                    _behaviour = new IdleEnemyBehaviour();
-                    break;
-                case EnemyState.Moving:
-                    _behaviour = new MovingEnemyBehaviour();
-                    break;
-                case EnemyState.Attacking:
-                    _behaviour = new AttackingEnemyBehaviour();
-                    break;
-                case EnemyState.Seduced:
-                    _behaviour = new SeducedEnemyBehaviour();
-                    break;
-                case EnemyState.Dead:
-                    _behaviour = new DeadEnemyBehaviour();
-                    break;
-                case EnemyState.Dating:
-                    _behaviour = new DatingEnemyBehaviour();
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(state), state, null);
+                switch (state)
+                {
+                    case EnemyState.Idle:
+                        _behaviours.Add(state, new IdleEnemyBehaviour());
+                        break;
+                    case EnemyState.Moving:
+                        _behaviours.Add(state, new MovingEnemyBehaviour());
+                        break;
+                    case EnemyState.Attacking:
+                        _behaviours.Add(state,new AttackingEnemyBehaviour());
+                        break;
+                    case EnemyState.Seduced:
+                        _behaviours.Add(state, new SeducedEnemyBehaviour());
+                        break;
+                    case EnemyState.Dead:
+                        _behaviours.Add(state, new DeadEnemyBehaviour());
+                        break;
+                    case EnemyState.Dating:
+                        _behaviours.Add(state, new DatingEnemyBehaviour());
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(state), state, null);
+                }
             }
+
+            _behaviour = _behaviours[state];
 
             _behaviour.OnTransitionIn(this);
         }
@@ -169,6 +177,13 @@ namespace Characters.Enemy
         public override Vector3 WeaponPivot()
         {
             return data.weaponPivot;
+        }
+
+        private void OnCollisionEnter2D(Collision2D other)
+        {
+            if (!_behaviour.IsState(EnemyState.Seduced))
+                return;
+            Debug.Log(other.gameObject.name);
         }
     }
 }
