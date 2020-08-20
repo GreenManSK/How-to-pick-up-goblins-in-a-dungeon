@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Characters;
+using Characters.Enemy;
 using Dating.Avatar.FemaleBody;
 using UnityEngine;
 
@@ -59,7 +60,7 @@ namespace Dating
         {
             var enemy = _enemies[activeIndex];
             dateArrow.transform.position = enemy.transform.position + new Vector3(0,0.5f,0);
-            avatarController.SetData(enemy.avatarData);
+            avatarController.SetData(enemy.data.avatarData);
         }
 
         private void Seduce()

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Characters;
+using Characters.Enemy;
 using Controlls;
 using Dating;
 using UnityEngine;

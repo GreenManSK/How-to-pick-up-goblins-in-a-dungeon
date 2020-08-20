@@ -1,4 +1,5 @@
 using Characters;
+using Characters.Enemy;
 using UnityEngine;
 
 namespace Enviroment

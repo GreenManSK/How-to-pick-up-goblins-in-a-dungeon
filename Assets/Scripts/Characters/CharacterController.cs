@@ -13,7 +13,6 @@ namespace Characters
 
         public abstract BasicStatsBlock GetBasicStats();
         public abstract void OnWeaponDestroy();
-        public abstract bool IsFlipped();
 
         public abstract Vector3 WeaponPivot();
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Constants;
 using Enviroment;
 using UnityEngine;
 using CharacterController = Characters.CharacterController;
@@ -14,6 +15,7 @@ public class WeaponController : MonoBehaviour
     private CharacterController _character;
     private readonly HashSet<int> _damaged = new HashSet<int>();
     private float _baseAngle;
+    private bool _isMoving = true;
 
     public void SetData(CharacterController character, Vector2 direction)
     {
@@ -34,6 +36,8 @@ public class WeaponController : MonoBehaviour
 
     private void Update()
     {
+        if (!_isMoving)
+            return;
         var angle = rotationSpeed * Time.deltaTime;
         transform.Rotate(new Vector3(0, 0, -angle));
         rotationAngle -= angle;
@@ -49,8 +53,15 @@ public class WeaponController : MonoBehaviour
         Destroy(gameObject);
     }
 
+    public void ToggleWeapon(bool stop)
+    {
+        _isMoving = !stop;
+    }
+    
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if (!_isMoving)
+            return;
         var go = other.gameObject;
         if (_damaged.Contains(go.GetInstanceID()) || !go.CompareTag(Tags.Destroyable)) return;
         var destroyableController = go.GetComponent<DestroyableController>();

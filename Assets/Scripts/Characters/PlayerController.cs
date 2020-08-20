@@ -103,11 +103,6 @@ namespace Characters
             _isAttacking = false;
         }
 
-        public override bool IsFlipped()
-        {
-            return sprite.flipX;
-        }
-
         public override BasicStatsBlock GetBasicStats()
         {
             return statsBlock;
