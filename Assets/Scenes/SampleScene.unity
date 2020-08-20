@@ -2296,6 +2296,11 @@ PrefabInstance:
       propertyPath: statsBlock.resistance
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 5169974924175716018, guid: 0c4272a0034180449a467e8ff3346a38,
+        type: 3}
+      propertyPath: data.statsBlock.con
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 8248012179080833895, guid: 0c4272a0034180449a467e8ff3346a38,
         type: 3}
       propertyPath: target

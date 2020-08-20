@@ -6,6 +6,7 @@ namespace Dating
         PickUpLine,
         Compliment,
         ShowInterest,
-        Insult
+        Insult,
+        Attack
     }
 }

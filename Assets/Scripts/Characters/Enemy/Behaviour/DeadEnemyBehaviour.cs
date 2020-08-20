@@ -1,8 +1,9 @@
 using Constants;
 using Services;
 using Services.Events;
+using UnityEngine;
 
-namespace Characters.Enemy
+namespace Characters.Enemy.Behaviour
 {
     public class DeadEnemyBehaviour : AEnemyBehaviour
     {
@@ -14,6 +15,7 @@ namespace Characters.Enemy
             Context.gameObject.layer = Layers.Walls;
             Context.onSetInactiveCallback?.Invoke();
             EventSystem.Send(new KillEvent(Context.data.statsBlock.con));
+            Object.Destroy(context.gameObject);
         }
         
         public override bool IsState(EnemyState state)

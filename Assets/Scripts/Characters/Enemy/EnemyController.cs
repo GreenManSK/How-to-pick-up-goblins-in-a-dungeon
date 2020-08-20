@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+using Characters.Enemy.Behaviour;
+using Characters.Enemy.Type;
+using Characters.Player;
 using Constants;
 using Dating;
 using Dating.Avatar.FemaleBody;
@@ -24,6 +27,7 @@ namespace Characters.Enemy
     [Serializable]
     public class EnemyData
     {
+        public EnemyType type = EnemyType.Normal;
         public EnemyStatsBlock statsBlock;
         public GameObject weapon;
         public Vector3 weaponPivot = Vector3.zero;
@@ -39,6 +43,15 @@ namespace Characters.Enemy
     {
         public static readonly int StopAnimation = Animator.StringToHash("Idle");
         public static readonly int MoveAnimation = Animator.StringToHash("Move");
+        
+        private static readonly Dictionary<EnemyType, IEnemyType> Types = new Dictionary<EnemyType, IEnemyType>()
+        {
+            {EnemyType.Normal, new NormalType()},
+            {EnemyType.Tsundere, new TsundereType()},
+            {EnemyType.Yandere, new YandereType()},
+            {EnemyType.Kuudere, new KuudereType()},
+            {EnemyType.Dandere, new DandereType()}
+        };
 
         public delegate void OnSetInactiveCallback();
 
@@ -63,6 +76,7 @@ namespace Characters.Enemy
         private AIPath _aiPath;
         private AIDestinationSetter _aiDestinationSetter;
         private IEnemyBehaviour _behaviour;
+        private IEnemyType _type;
 
         private readonly Dictionary<EnemyState, IEnemyBehaviour> _behaviours = new Dictionary<EnemyState, IEnemyBehaviour>();
 
@@ -72,6 +86,8 @@ namespace Characters.Enemy
             _aiPath = GetComponent<AIPath>();
             _aiDestinationSetter = GetComponent<AIDestinationSetter>();
             data.avatarData = FemaleAvatarData.Random();
+
+            _type = Types[data.type];
             ChangeState(EnemyState.Idle);
             ChangeResistance(data.statsBlock.GetMaxResistance());
         }
@@ -123,8 +139,8 @@ namespace Characters.Enemy
 
         public void Seduce(float value, SeductionType type)
         {
-            // TODO: Add type effectivnes
-            ChangeResistance(data.resistance - value);
+            // TODO: Message about effectivnes of attack
+            ChangeResistance(data.resistance - value * _type.TypeMultiplier(type));
         } 
 
         private void ChangeResistance(float value)
@@ -186,6 +202,20 @@ namespace Characters.Enemy
         public override Vector3 WeaponPivot()
         {
             return data.weaponPivot;
+        }
+
+        public override void Damage(float value, CharacterController attacker)
+        {
+            base.Damage(value, attacker);
+            if (_behaviour.IsState(EnemyState.Seduced))
+            {
+                ChangeState(EnemyState.Dead);
+                return;
+            }
+            if (attacker is PlayerController)
+            {
+                Seduce(attacker.GetBasicStats().str, SeductionType.Attack);
+            }
         }
 
         private void OnCollisionEnter2D(Collision2D other)

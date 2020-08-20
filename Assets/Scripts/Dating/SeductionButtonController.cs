@@ -8,7 +8,7 @@ namespace Dating
         public SeductionType type = SeductionType.Compliment;
         public Button Button { get; private set; }
 
-        private void Start()
+        private void Awake()
         {
             Button = GetComponent<Button>();
         }

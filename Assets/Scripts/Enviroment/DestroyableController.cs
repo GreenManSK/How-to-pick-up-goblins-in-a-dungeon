@@ -1,4 +1,5 @@
 using UnityEngine;
+using CharacterController = Characters.CharacterController;
 
 namespace Enviroment
 {
@@ -6,7 +7,7 @@ namespace Enviroment
     {
         public float health = 1;
 
-        public virtual void Damage(float value)
+        public virtual void Damage(float value, CharacterController attacker)
         {
             health -= value;
             if (Mathf.Approximately(health, 0f) || health <= 0)

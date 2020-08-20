@@ -3,7 +3,7 @@ using Services;
 using Services.Events;
 using UnityEngine;
 
-namespace Characters.Enemy
+namespace Characters.Enemy.Behaviour
 {
     public class SeducedEnemyBehaviour : AEnemyBehaviour
     {

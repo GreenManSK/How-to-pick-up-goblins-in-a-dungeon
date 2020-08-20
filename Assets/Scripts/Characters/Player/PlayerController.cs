@@ -81,7 +81,7 @@ namespace Characters.Player
             }
 
             _behaviour?.OnTransitionOut();
-            
+
             if (!_behaviours.ContainsKey(state))
             {
                 switch (state)
@@ -141,7 +141,7 @@ namespace Characters.Player
                 sprite.flipX = Movement.x < 0;
             }
         }
-        
+
         public override void OnWeaponDestroy()
         {
             weapon = null;
@@ -159,9 +159,9 @@ namespace Characters.Player
             return weaponPivot;
         }
 
-        public override void Damage(float value)
+        public override void Damage(float value, CharacterController attacker)
         {
-            base.Damage(value);
+            base.Damage(value, attacker);
             if (Gamepad.current == null)
                 return;
             GamepadSystem.Instance.AddVibration(1f, 1f, 0.5f);
