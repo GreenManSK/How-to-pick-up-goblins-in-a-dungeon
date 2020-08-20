@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Constants;
+using Dating;
 using Dating.Avatar.FemaleBody;
 using Pathfinding;
 using Services;
@@ -72,7 +73,7 @@ namespace Characters.Enemy
             _aiDestinationSetter = GetComponent<AIDestinationSetter>();
             data.avatarData = FemaleAvatarData.Random();
             ChangeState(EnemyState.Idle);
-            ChangeResistance(data.statsBlock.GetMaxResistance(), false);
+            ChangeResistance(data.statsBlock.GetMaxResistance());
         }
 
         private void Update()
@@ -120,13 +121,18 @@ namespace Characters.Enemy
             _behaviour.OnTransitionIn(this);
         }
 
-        public void ChangeResistance(float value, bool relative = true)
+        public void Seduce(float value, SeductionType type)
+        {
+            // TODO: Add type effectivnes
+            ChangeResistance(data.resistance - value);
+        } 
+
+        private void ChangeResistance(float value)
         {
             if (_behaviour.IsState(EnemyState.Dead))
                 return;
 
-            data.resistance = relative ? data.resistance + value : value;
-            data.resistance = Mathf.Max(data.resistance, 0f);
+            data.resistance = Mathf.Max(value, 0f);
 
             UpdateBlush();
 

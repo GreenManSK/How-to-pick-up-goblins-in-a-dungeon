@@ -11,6 +11,8 @@ public class PlayerDataController : MonoBehaviour, IEventListener<SeductionEvent
     public int seductionCount = 0;
     public int killCount = 0;
 
+    private bool _subscribed = false;
+    
     private void Start()
     {
         DontDestroyOnLoad(this);
@@ -21,13 +23,17 @@ public class PlayerDataController : MonoBehaviour, IEventListener<SeductionEvent
         EventSystem.Subscribe<SeductionEvent>(this);
         EventSystem.Subscribe<KillEvent>(this);
         EventSystem.Subscribe<SeducedPickUpEvent>(this);
+        _subscribed = true;
     }
 
     private void OnDisable()
     {
+        if (!_subscribed)
+            return;
         EventSystem.Unsubscribe<SeductionEvent>(this);
         EventSystem.Unsubscribe<KillEvent>(this);
         EventSystem.Unsubscribe<SeducedPickUpEvent>(this);
+        _subscribed = false;
     }
 
     public void OnEvent(SeductionEvent @event)

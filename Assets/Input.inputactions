@@ -129,7 +129,7 @@
             "id": "a2f16c3f-bf3b-475a-88d5-7bb40868b350",
             "actions": [
                 {
-                    "name": "Stop",
+                    "name": "DateButton",
                     "type": "Button",
                     "id": "0267f5b1-8ee2-49de-a73b-1c028442ea98",
                     "expectedControlType": "Button",
@@ -159,6 +159,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Exit",
+                    "type": "Button",
+                    "id": "ffd1adf0-8b1a-48c9-bd6f-bf85a29b9da3",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -169,7 +177,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Stop",
+                    "action": "DateButton",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -180,7 +188,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Stop",
+                    "action": "DateButton",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -220,7 +228,7 @@
                 {
                     "name": "",
                     "id": "32c6a635-2bb7-40eb-a970-20f2fabeaaf3",
-                    "path": "<Keyboard>/w",
+                    "path": "<Keyboard>/s",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -286,7 +294,7 @@
                 {
                     "name": "",
                     "id": "7085838f-2334-4660-9057-7e27445c8a9d",
-                    "path": "<Keyboard>/s",
+                    "path": "<Keyboard>/w",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -335,6 +343,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Select",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5223931c-e240-4bc8-803a-f137cf0b6f98",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Exit",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f31893d1-b68e-4c80-be25-3e329918714a",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Exit",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

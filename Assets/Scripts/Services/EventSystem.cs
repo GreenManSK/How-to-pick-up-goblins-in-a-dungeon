@@ -18,7 +18,7 @@ namespace Services
             }
         }
 
-        private Dictionary<Type, List<IEventListener>> _listeners =
+        private readonly Dictionary<Type, List<IEventListener>> _listeners =
             new Dictionary<Type, List<IEventListener>>();
 
         private static void Init()

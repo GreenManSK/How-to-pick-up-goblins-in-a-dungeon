@@ -142,7 +142,7 @@ public class @Input : IInputActionCollection, IDisposable
             ""id"": ""a2f16c3f-bf3b-475a-88d5-7bb40868b350"",
             ""actions"": [
                 {
-                    ""name"": ""Stop"",
+                    ""name"": ""DateButton"",
                     ""type"": ""Button"",
                     ""id"": ""0267f5b1-8ee2-49de-a73b-1c028442ea98"",
                     ""expectedControlType"": ""Button"",
@@ -172,6 +172,14 @@ public class @Input : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Exit"",
+                    ""type"": ""Button"",
+                    ""id"": ""ffd1adf0-8b1a-48c9-bd6f-bf85a29b9da3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -182,7 +190,7 @@ public class @Input : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Stop"",
+                    ""action"": ""DateButton"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -193,7 +201,7 @@ public class @Input : IInputActionCollection, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Stop"",
+                    ""action"": ""DateButton"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -233,7 +241,7 @@ public class @Input : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""32c6a635-2bb7-40eb-a970-20f2fabeaaf3"",
-                    ""path"": ""<Keyboard>/w"",
+                    ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -299,7 +307,7 @@ public class @Input : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""7085838f-2334-4660-9057-7e27445c8a9d"",
-                    ""path"": ""<Keyboard>/s"",
+                    ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -350,6 +358,28 @@ public class @Input : IInputActionCollection, IDisposable
                     ""action"": ""Select"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5223931c-e240-4bc8-803a-f137cf0b6f98"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Exit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f31893d1-b68e-4c80-be25-3e329918714a"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Exit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -389,10 +419,11 @@ public class @Input : IInputActionCollection, IDisposable
         m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
         // Dating
         m_Dating = asset.FindActionMap("Dating", throwIfNotFound: true);
-        m_Dating_Stop = m_Dating.FindAction("Stop", throwIfNotFound: true);
+        m_Dating_DateButton = m_Dating.FindAction("DateButton", throwIfNotFound: true);
         m_Dating_Select = m_Dating.FindAction("Select", throwIfNotFound: true);
         m_Dating_Next = m_Dating.FindAction("Next", throwIfNotFound: true);
         m_Dating_Prev = m_Dating.FindAction("Prev", throwIfNotFound: true);
+        m_Dating_Exit = m_Dating.FindAction("Exit", throwIfNotFound: true);
         // Testing
         m_Testing = asset.FindActionMap("Testing", throwIfNotFound: true);
         m_Testing_Restart = m_Testing.FindAction("Restart", throwIfNotFound: true);
@@ -486,18 +517,20 @@ public class @Input : IInputActionCollection, IDisposable
     // Dating
     private readonly InputActionMap m_Dating;
     private IDatingActions m_DatingActionsCallbackInterface;
-    private readonly InputAction m_Dating_Stop;
+    private readonly InputAction m_Dating_DateButton;
     private readonly InputAction m_Dating_Select;
     private readonly InputAction m_Dating_Next;
     private readonly InputAction m_Dating_Prev;
+    private readonly InputAction m_Dating_Exit;
     public struct DatingActions
     {
         private @Input m_Wrapper;
         public DatingActions(@Input wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Stop => m_Wrapper.m_Dating_Stop;
+        public InputAction @DateButton => m_Wrapper.m_Dating_DateButton;
         public InputAction @Select => m_Wrapper.m_Dating_Select;
         public InputAction @Next => m_Wrapper.m_Dating_Next;
         public InputAction @Prev => m_Wrapper.m_Dating_Prev;
+        public InputAction @Exit => m_Wrapper.m_Dating_Exit;
         public InputActionMap Get() { return m_Wrapper.m_Dating; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -507,9 +540,9 @@ public class @Input : IInputActionCollection, IDisposable
         {
             if (m_Wrapper.m_DatingActionsCallbackInterface != null)
             {
-                @Stop.started -= m_Wrapper.m_DatingActionsCallbackInterface.OnStop;
-                @Stop.performed -= m_Wrapper.m_DatingActionsCallbackInterface.OnStop;
-                @Stop.canceled -= m_Wrapper.m_DatingActionsCallbackInterface.OnStop;
+                @DateButton.started -= m_Wrapper.m_DatingActionsCallbackInterface.OnDateButton;
+                @DateButton.performed -= m_Wrapper.m_DatingActionsCallbackInterface.OnDateButton;
+                @DateButton.canceled -= m_Wrapper.m_DatingActionsCallbackInterface.OnDateButton;
                 @Select.started -= m_Wrapper.m_DatingActionsCallbackInterface.OnSelect;
                 @Select.performed -= m_Wrapper.m_DatingActionsCallbackInterface.OnSelect;
                 @Select.canceled -= m_Wrapper.m_DatingActionsCallbackInterface.OnSelect;
@@ -519,13 +552,16 @@ public class @Input : IInputActionCollection, IDisposable
                 @Prev.started -= m_Wrapper.m_DatingActionsCallbackInterface.OnPrev;
                 @Prev.performed -= m_Wrapper.m_DatingActionsCallbackInterface.OnPrev;
                 @Prev.canceled -= m_Wrapper.m_DatingActionsCallbackInterface.OnPrev;
+                @Exit.started -= m_Wrapper.m_DatingActionsCallbackInterface.OnExit;
+                @Exit.performed -= m_Wrapper.m_DatingActionsCallbackInterface.OnExit;
+                @Exit.canceled -= m_Wrapper.m_DatingActionsCallbackInterface.OnExit;
             }
             m_Wrapper.m_DatingActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @Stop.started += instance.OnStop;
-                @Stop.performed += instance.OnStop;
-                @Stop.canceled += instance.OnStop;
+                @DateButton.started += instance.OnDateButton;
+                @DateButton.performed += instance.OnDateButton;
+                @DateButton.canceled += instance.OnDateButton;
                 @Select.started += instance.OnSelect;
                 @Select.performed += instance.OnSelect;
                 @Select.canceled += instance.OnSelect;
@@ -535,6 +571,9 @@ public class @Input : IInputActionCollection, IDisposable
                 @Prev.started += instance.OnPrev;
                 @Prev.performed += instance.OnPrev;
                 @Prev.canceled += instance.OnPrev;
+                @Exit.started += instance.OnExit;
+                @Exit.performed += instance.OnExit;
+                @Exit.canceled += instance.OnExit;
             }
         }
     }
@@ -579,10 +618,11 @@ public class @Input : IInputActionCollection, IDisposable
     }
     public interface IDatingActions
     {
-        void OnStop(InputAction.CallbackContext context);
+        void OnDateButton(InputAction.CallbackContext context);
         void OnSelect(InputAction.CallbackContext context);
         void OnNext(InputAction.CallbackContext context);
         void OnPrev(InputAction.CallbackContext context);
+        void OnExit(InputAction.CallbackContext context);
     }
     public interface ITestingActions
     {
